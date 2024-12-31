@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.myapplication.HomePageController">
+   <children>
+      <AnchorPane layoutX="135.0" layoutY="53.0" prefHeight="200.0" prefWidth="630.0" style="-fx-background-color: #52dcf5;" AnchorPane.leftAnchor="135.0" AnchorPane.rightAnchor="135.0" AnchorPane.topAnchor="53.0">
+         <children>
+            <AnchorPane fx:id="innerAnchorPane" layoutX="153.0" layoutY="65.0" prefHeight="80.0" prefWidth="325.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="152.0">
+               <children>
+                  <Label alignment="CENTER" layoutX="32.0" layoutY="23.0" prefHeight="33.0" prefWidth="266.0" text="welcome to home page" textFill="WHITE" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="27.0">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <Button fx:id="imageImport" layoutX="331.0" layoutY="379.0" mnemonicParsing="false" onAction="#chooseImage" prefHeight="62.0" prefWidth="186.0" styleClass="rounded-button" stylesheets="@style.css" text="Import" />
+      <AnchorPane layoutX="614.0" layoutY="392.0" prefHeight="245.0" prefWidth="200.0">
+         <children>
+            <ImageView fx:id="imageShow" fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="toggle" layoutX="83.0" layoutY="313.0" mnemonicParsing="false" onAction="#toggleVisibility" text="Button" />
+   </children>
+</AnchorPane>

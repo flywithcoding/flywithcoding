@@ -1,0 +1,32 @@
+.text-container{
+    -fx-border-color: #6F6F6F;
+    -fx-border-radius: 10;
+}
+
+.transparent{
+    -fx-background-color: rgba(0,0,0,0);
+}
+
+/* Default Button styling */
+.rounded-button {
+    -fx-background-color: #07dbdb;    /* Initial background color */
+    -fx-background-radius: 10;        /* Rounded corners */
+    -fx-border-radius: 10;            /* Matching border radius */
+    -fx-padding: 8 16;                /* Padding */
+    -fx-text-fill: white;             /* Initial text color */
+    -fx-font-size: 14px;              /* Font size */
+    -fx-font-weight: bold;            /* Font weight */
+    -fx-cursor: hand;                 /* Cursor changes to pointer */
+    -fx-effect: dropshadow(one-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 2); /* Optional shadow */
+}
+
+/* Hover effect */
+.rounded-button:hover {
+    -fx-background-color: #fbfdfb;    /* Top layer for hover, bottom for default */
+    -fx-background-radius: 10;                 /* Keep rounded corners */
+    -fx-text-fill: black;                      /* Change text color to black on hover */
+}
+
+.hyperlink {
+    -fx-border-color: rgba(0,0,0,0);
+}
