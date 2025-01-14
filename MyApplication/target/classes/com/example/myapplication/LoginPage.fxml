@@ -26,7 +26,7 @@
                         <Image url="@../../../../../../../../../../JavaFX/Icons/icons8-user-24.png" />
                      </image>
                   </ImageView>
-                  <TextField fx:id="emailTextField" prefHeight="32.0" prefWidth="256.0" promptText="Email or Phone Number" styleClass="transparent">
+                  <TextField fx:id="emailTextField" prefHeight="32.0" prefWidth="256.0" promptText="Email or Phone Number" styleClass="transparent" stylesheets="@style.css">
                      <font>
                         <Font size="14.0" />
                      </font>
