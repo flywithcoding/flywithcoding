@@ -4,13 +4,15 @@ public class GarageCard {
     private String garageName;
     private String location;
     private String contact;
+    private byte[] image;
 
 
-    public GarageCard(String garageName, String location, String contact) {
-        this.garageName = garageName;
-        this.location = location;
-        this.contact = contact;
-    }
+//    public GarageCard(String garageName, String location, String contact/*, byte[] image*/) {
+//        this.garageName = garageName;
+//        this.location = location;
+//        this.contact = contact;
+//        //this.image = image;
+//    }
 
     public String getGarageName() {
         return garageName;
@@ -36,10 +38,11 @@ public class GarageCard {
         this.contact = contact;
     }
 
-//    @Override
-//    public String toString() {
-//        return
-//    }
+    public byte[] getImage() {
+        return image;
+    }
 
-
+    public void setImageBytes(byte[] imageBytes) {
+        this.image = imageBytes;
+    }
 }

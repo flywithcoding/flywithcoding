@@ -1,92 +1,102 @@
 package com.example.myapplication;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.AnchorPane;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
 
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.GridPane;
-
 public class YourGarageController implements Initializable {
+
     @FXML
-    private GridPane menuGridPane;
+    private GridPane garageGridPane;
 
     @FXML
     private ScrollPane menuScrollPane;
 
-    private ObservableList<GarageCard> cardListData = FXCollections.observableArrayList();
-
-    public ObservableList<GarageCard> menuGetData() {
-        String sql = "SELECT * FROM garagecarddata";
-
-        ObservableList<GarageCard> listData = FXCollections.observableArrayList();
-
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection connectDB = databaseConnection.getConnection();
-
-        try {
-            PreparedStatement statement = connectDB.prepareStatement(sql);
-            ResultSet rs = statement.executeQuery();
-
-            GarageCard garage;
-
-            while (rs.next()) {
-                garage = new GarageCard(rs.getString("garageName"),
-                                        rs.getString("garageLocation"),
-                                        rs.getString("garageContact"));
-
-                listData.add(garage);
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return listData;
-    }
-
-    public void menuDisplayCard() {
-        cardListData.clear();
-        cardListData.addAll(menuGetData());
-
-        int row = 0;
-        int column = 0;
-
-        menuGridPane.getRowConstraints().clear();
-        menuGridPane.getColumnConstraints().clear();
-
-        for(int q=0; q < cardListData.size(); q++) {
-            try {
-                FXMLLoader load = new FXMLLoader();
-                load.setLocation(getClass().getResource("GarageCard.fxml"));
-                AnchorPane pane = load.load();
-                GarageCardController cardC = load.getController();
-                cardC.setData(cardListData.get(q));
-
-                if(column == 3) {
-                    column = 0;
-                    row += 1;
-                }
-
-                menuGridPane.add(pane, column++, row);
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        menuDisplayCard();
+        List<GarageCard> garageCardList = loadGarageDataFromDatabase();
+        System.out.println("Number of garage cards loaded: " + garageCardList.size());
+
+        int columns = 0;
+        int rows = 1;
+
+        try {
+            for (GarageCard garageCard : garageCardList) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("GarageDesign.fxml"));
+
+                VBox garageBox = fxmlLoader.load();
+
+//                Node node = fxmlLoader.load();
+
+                GarageCardController garageCardController = fxmlLoader.getController();
+                garageCardController.setData(garageCard);
+
+                if (columns == 3) { // Display 3 cards per row
+                    columns = 0;
+                    rows++;
+                }
+
+                garageGridPane.add(garageBox, columns++, rows);
+                GridPane.setMargin(garageBox, new Insets(10));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Print any exceptions that occur
+        }
+    }
+
+    private List<GarageCard> loadGarageDataFromDatabase() {
+        List<GarageCard> garageCards = new ArrayList<>();
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connectionDB = null;
+
+        try {
+            connectionDB = databaseConnection.getConnection();
+            String query = "SELECT garageName, garageLocation, garageContact, garageImage FROM garagecarddata";
+
+            PreparedStatement preparedStatement = connectionDB.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                GarageCard garageCard = new GarageCard();
+                garageCard.setGarageName(resultSet.getString("garageName"));
+                garageCard.setLocation(resultSet.getString("garageLocation"));
+                garageCard.setContact(resultSet.getString("garageContact"));
+
+                byte[] imageBytes = resultSet.getBytes("garageImage");
+                garageCard.setImageBytes(imageBytes);
+
+                garageCards.add(garageCard);
+                System.out.println("Loaded garage: " + garageCard.getGarageName());
+
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connectionDB != null) {
+                try {
+                    connectionDB.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return garageCards;
     }
 }
